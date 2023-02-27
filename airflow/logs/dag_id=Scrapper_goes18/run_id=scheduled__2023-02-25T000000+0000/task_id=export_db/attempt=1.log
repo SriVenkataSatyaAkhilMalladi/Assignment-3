@@ -1,0 +1,23 @@
+[2023-02-26T16:59:59.210+0000] {taskinstance.py:1083} INFO - Dependencies all met for <TaskInstance: Scrapper_goes18.export_db scheduled__2023-02-25T00:00:00+00:00 [queued]>
+[2023-02-26T16:59:59.224+0000] {taskinstance.py:1083} INFO - Dependencies all met for <TaskInstance: Scrapper_goes18.export_db scheduled__2023-02-25T00:00:00+00:00 [queued]>
+[2023-02-26T16:59:59.224+0000] {taskinstance.py:1279} INFO - 
+--------------------------------------------------------------------------------
+[2023-02-26T16:59:59.225+0000] {taskinstance.py:1280} INFO - Starting attempt 1 of 1
+[2023-02-26T16:59:59.225+0000] {taskinstance.py:1281} INFO - 
+--------------------------------------------------------------------------------
+[2023-02-26T16:59:59.240+0000] {taskinstance.py:1300} INFO - Executing <Task(PythonOperator): export_db> on 2023-02-25 00:00:00+00:00
+[2023-02-26T16:59:59.252+0000] {standard_task_runner.py:55} INFO - Started process 161 to run task
+[2023-02-26T16:59:59.255+0000] {standard_task_runner.py:82} INFO - Running: ['***', 'tasks', 'run', 'Scrapper_goes18', 'export_db', 'scheduled__2023-02-25T00:00:00+00:00', '--job-id', '30', '--raw', '--subdir', 'DAGS_FOLDER/goes_scrapper_dag.py', '--cfg-path', '/tmp/tmp5324yora']
+[2023-02-26T16:59:59.256+0000] {standard_task_runner.py:83} INFO - Job 30: Subtask export_db
+[2023-02-26T16:59:59.368+0000] {task_command.py:388} INFO - Running <TaskInstance: Scrapper_goes18.export_db scheduled__2023-02-25T00:00:00+00:00 [running]> on host 41c53da71dc8
+[2023-02-26T16:59:59.514+0000] {taskinstance.py:1509} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=***
+AIRFLOW_CTX_DAG_ID=Scrapper_goes18
+AIRFLOW_CTX_TASK_ID=export_db
+AIRFLOW_CTX_EXECUTION_DATE=2023-02-25T00:00:00+00:00
+AIRFLOW_CTX_TRY_NUMBER=1
+AIRFLOW_CTX_DAG_RUN_ID=scheduled__2023-02-25T00:00:00+00:00
+[2023-02-26T17:00:09.671+0000] {python.py:177} INFO - Done. Returned value was: None
+[2023-02-26T17:00:09.696+0000] {taskinstance.py:1323} INFO - Marking task as SUCCESS. dag_id=Scrapper_goes18, task_id=export_db, execution_date=20230225T000000, start_date=20230226T165959, end_date=20230226T170009
+[2023-02-26T17:00:09.796+0000] {local_task_job.py:208} INFO - Task exited with return code 0
+[2023-02-26T17:00:09.843+0000] {taskinstance.py:2578} INFO - 0 downstream tasks scheduled from follow-on schedule check

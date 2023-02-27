@@ -1,0 +1,48 @@
+[2023-02-27T04:00:13.765+0000] {processor.py:153} INFO - Started process (PID=86) to work on /opt/airflow/dags/nexrad_scrapper_dag.py
+[2023-02-27T04:00:13.766+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/nexrad_scrapper_dag.py for tasks to queue
+[2023-02-27T04:00:13.767+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:13.767+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/nexrad_scrapper_dag.py
+[2023-02-27T04:00:18.001+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:18.001+0000] {warnings.py:110} WARNING - /opt/airflow/dags/nexrad_scrapper_dag.py:37: RemovedInAirflow3Warning: Function `days_ago` is deprecated and will be removed in Airflow 3.0. You can achieve equivalent behavior with `pendulum.today('UTC').add(days=-N, ...)`
+  start_date=days_ago(0),
+[2023-02-27T04:00:18.003+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:18.003+0000] {warnings.py:110} WARNING - /opt/airflow/dags/nexrad_scrapper_dag.py:129: RemovedInAirflow3Warning: Function `days_ago` is deprecated and will be removed in Airflow 3.0. You can achieve equivalent behavior with `pendulum.today('UTC').add(days=-N, ...)`
+  start_date=days_ago(0)
+[2023-02-27T04:00:18.004+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:18.004+0000] {warnings.py:110} WARNING - /opt/airflow/dags/nexrad_scrapper_dag.py:137: RemovedInAirflow3Warning: Function `days_ago` is deprecated and will be removed in Airflow 3.0. You can achieve equivalent behavior with `pendulum.today('UTC').add(days=-N, ...)`
+  start_date=days_ago(0)
+[2023-02-27T04:00:18.011+0000] {processor.py:753} INFO - DAG(s) dict_keys(['nex_Scrapper']) retrieved from /opt/airflow/dags/nexrad_scrapper_dag.py
+[2023-02-27T04:00:18.075+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:18.075+0000] {dag.py:2690} INFO - Sync 1 DAGs
+[2023-02-27T04:00:18.103+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:18.103+0000] {dag.py:3441} INFO - Setting next_dagrun for nex_Scrapper to 2023-02-27T00:00:00+00:00, run_after=2023-02-28T00:00:00+00:00
+[2023-02-27T04:00:18.124+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/nexrad_scrapper_dag.py took 4.362 seconds
+[2023-02-27T04:00:23.967+0000] {processor.py:153} INFO - Started process (PID=94) to work on /opt/airflow/dags/nexrad_scrapper_dag.py
+[2023-02-27T04:00:23.968+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/nexrad_scrapper_dag.py for tasks to queue
+[2023-02-27T04:00:23.968+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:23.968+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/nexrad_scrapper_dag.py
+[2023-02-27T04:00:26.432+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:26.432+0000] {warnings.py:110} WARNING - /opt/airflow/dags/nexrad_scrapper_dag.py:37: RemovedInAirflow3Warning: Function `days_ago` is deprecated and will be removed in Airflow 3.0. You can achieve equivalent behavior with `pendulum.today('UTC').add(days=-N, ...)`
+  start_date=days_ago(0),
+[2023-02-27T04:00:26.437+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:26.436+0000] {warnings.py:110} WARNING - /opt/airflow/dags/nexrad_scrapper_dag.py:129: RemovedInAirflow3Warning: Function `days_ago` is deprecated and will be removed in Airflow 3.0. You can achieve equivalent behavior with `pendulum.today('UTC').add(days=-N, ...)`
+  start_date=days_ago(0)
+[2023-02-27T04:00:26.438+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:26.438+0000] {warnings.py:110} WARNING - /opt/airflow/dags/nexrad_scrapper_dag.py:137: RemovedInAirflow3Warning: Function `days_ago` is deprecated and will be removed in Airflow 3.0. You can achieve equivalent behavior with `pendulum.today('UTC').add(days=-N, ...)`
+  start_date=days_ago(0)
+[2023-02-27T04:00:26.455+0000] {processor.py:753} INFO - DAG(s) dict_keys(['nex_Scrapper']) retrieved from /opt/airflow/dags/nexrad_scrapper_dag.py
+[2023-02-27T04:00:26.507+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:26.507+0000] {taskinstance.py:1770} ERROR - {'DAG Id': 'nex_Scrapper', 'Task Id': 'scrape_nexrad_data', 'Run Id': 'scheduled__2023-02-25T00:00:00+00:00', 'Hostname': '41c53da71dc8', 'External Executor Id': 'c8f598c0-67c5-4edd-b28e-ac54a798d3f7'}
+[2023-02-27T04:00:26.567+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:26.567+0000] {taskinstance.py:1323} INFO - Marking task as FAILED. dag_id=nex_Scrapper, task_id=scrape_nexrad_data, execution_date=20230225T000000, start_date=20230226T165934, end_date=20230227T040026
+[2023-02-27T04:00:26.590+0000] {processor.py:713} INFO - Executed failure callback for <TaskInstance: nex_Scrapper.scrape_nexrad_data scheduled__2023-02-25T00:00:00+00:00 [failed]> in state failed
+[2023-02-27T04:00:26.598+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:26.598+0000] {dag.py:2690} INFO - Sync 1 DAGs
+[2023-02-27T04:00:26.646+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:26.646+0000] {dag.py:3441} INFO - Setting next_dagrun for nex_Scrapper to 2023-02-27T00:00:00+00:00, run_after=2023-02-28T00:00:00+00:00
+[2023-02-27T04:00:26.674+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/nexrad_scrapper_dag.py took 2.710 seconds
+[2023-02-27T04:00:34.163+0000] {processor.py:153} INFO - Started process (PID=116) to work on /opt/airflow/dags/nexrad_scrapper_dag.py
+[2023-02-27T04:00:34.164+0000] {processor.py:743} INFO - Processing file /opt/airflow/dags/nexrad_scrapper_dag.py for tasks to queue
+[2023-02-27T04:00:34.167+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:34.166+0000] {dagbag.py:538} INFO - Filling up the DagBag from /opt/airflow/dags/nexrad_scrapper_dag.py
+[2023-02-27T04:00:37.433+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:37.433+0000] {warnings.py:110} WARNING - /opt/airflow/dags/nexrad_scrapper_dag.py:37: RemovedInAirflow3Warning: Function `days_ago` is deprecated and will be removed in Airflow 3.0. You can achieve equivalent behavior with `pendulum.today('UTC').add(days=-N, ...)`
+  start_date=days_ago(0),
+[2023-02-27T04:00:37.436+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:37.436+0000] {warnings.py:110} WARNING - /opt/airflow/dags/nexrad_scrapper_dag.py:129: RemovedInAirflow3Warning: Function `days_ago` is deprecated and will be removed in Airflow 3.0. You can achieve equivalent behavior with `pendulum.today('UTC').add(days=-N, ...)`
+  start_date=days_ago(0)
+[2023-02-27T04:00:37.438+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:37.438+0000] {warnings.py:110} WARNING - /opt/airflow/dags/nexrad_scrapper_dag.py:137: RemovedInAirflow3Warning: Function `days_ago` is deprecated and will be removed in Airflow 3.0. You can achieve equivalent behavior with `pendulum.today('UTC').add(days=-N, ...)`
+  start_date=days_ago(0)
+[2023-02-27T04:00:37.445+0000] {processor.py:753} INFO - DAG(s) dict_keys(['nex_Scrapper']) retrieved from /opt/airflow/dags/nexrad_scrapper_dag.py
+[2023-02-27T04:00:37.474+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:37.473+0000] {taskinstance.py:1770} ERROR - {'DAG Id': 'nex_Scrapper', 'Task Id': 'scrape_nexrad_data', 'Run Id': 'scheduled__2023-02-24T00:00:00+00:00', 'Hostname': '41c53da71dc8', 'External Executor Id': '37f79bdc-a67d-4c0e-a708-cef5a5402a35'}
+[2023-02-27T04:00:37.495+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:37.495+0000] {taskinstance.py:1323} INFO - Marking task as FAILED. dag_id=nex_Scrapper, task_id=scrape_nexrad_data, execution_date=20230224T000000, start_date=20230226T165934, end_date=20230227T040037
+[2023-02-27T04:00:37.506+0000] {processor.py:713} INFO - Executed failure callback for <TaskInstance: nex_Scrapper.scrape_nexrad_data scheduled__2023-02-24T00:00:00+00:00 [failed]> in state failed
+[2023-02-27T04:00:37.509+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:37.509+0000] {taskinstance.py:1770} ERROR - {'DAG Id': 'nex_Scrapper', 'Task Id': 'scrape_nexrad_data', 'Run Id': 'scheduled__2023-02-24T00:00:00+00:00', 'Hostname': '41c53da71dc8', 'External Executor Id': '37f79bdc-a67d-4c0e-a708-cef5a5402a35'}
+[2023-02-27T04:00:37.520+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:37.520+0000] {taskinstance.py:1323} INFO - Marking task as FAILED. dag_id=nex_Scrapper, task_id=scrape_nexrad_data, execution_date=20230224T000000, start_date=20230226T165934, end_date=20230227T040037
+[2023-02-27T04:00:37.524+0000] {processor.py:713} INFO - Executed failure callback for <TaskInstance: nex_Scrapper.scrape_nexrad_data scheduled__2023-02-24T00:00:00+00:00 [failed]> in state failed
+[2023-02-27T04:00:37.528+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:37.528+0000] {dag.py:2690} INFO - Sync 1 DAGs
+[2023-02-27T04:00:37.552+0000] {logging_mixin.py:137} INFO - [2023-02-27T04:00:37.551+0000] {dag.py:3441} INFO - Setting next_dagrun for nex_Scrapper to 2023-02-27T00:00:00+00:00, run_after=2023-02-28T00:00:00+00:00
+[2023-02-27T04:00:37.591+0000] {processor.py:175} INFO - Processing /opt/airflow/dags/nexrad_scrapper_dag.py took 3.434 seconds
