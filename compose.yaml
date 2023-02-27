@@ -1,6 +1,6 @@
 services:
   api:
-    image: thejasbh/fastapi:833a771
+    image: thejasbh/fastapi:2fbfcdb
     container_name: fastapi.latest
     environment:
       PORT: 8080
@@ -10,7 +10,7 @@ services:
     volumes:
       - .:/ass2
   streamlit:
-    image: thejasbh/streamlit:833a771
+    image: thejasbh/streamlit:2fbfcdb
     container_name: streamlit.latest
     environment:
         PORT: 8501
