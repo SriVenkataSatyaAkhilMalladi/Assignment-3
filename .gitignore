@@ -1,5 +1,7 @@
 #user-defined
 virAssignment2
+virAssignment3
+
 pytest/venv_ptest
 logs/venv_logs
 .env
@@ -14,3 +16,4 @@ great_expectations/uncommitted/validations
 
 *.pyc
 airflow/logs/scheduler/latest
+ubuntu.pem
