@@ -6,7 +6,9 @@ import os
 app = typer.Typer()
 
 
-base_url ='http://localhost:8070/'
+base_url =' http://ec2-44-211-9-40.compute-1.amazonaws.com:8070/'
+token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyX2ZyZWUiLCJleHAiOjE2Nzg4Nzg5NzF9.nf3xgoIkWBEvega60fBa88IzWNIKUHtI7f6mC5aDMi0'
+headers = {"Authorization": f"Bearer {token}"}
 @app.command()
 def create_user(
         username: str = typer.Option(..., prompt=True),
@@ -36,7 +38,7 @@ def downloadByFileName(filename: str):
         url = base_url + 'filename_url_gen_goes'
     else:
         url = base_url + 'filename_url_gen_nexrad'
-    response = requests.get(url,params=json_file_name)  
+    response = requests.get(url,params=json_file_name,headers=headers)  
     data = response.json()
   
     typer.echo(data['url'])
@@ -56,7 +58,7 @@ def fetchGoes(bucket: str = typer.Option(..., prompt=True),
     prefix = 'ABI-L1b-RadC/{}/{}/{}/'.format(year_geos,day_of_year_geos,hour_of_day)
 
 
-    response = requests.get(url,params={"bucket":bucket,"prefix":prefix}).json()
+    response = requests.get(url,params={"bucket":bucket,"prefix":prefix},headers=headers).json()
     typer.echo(response)
 
 
@@ -75,7 +77,7 @@ def fetchNexrad(bucket: str = typer.Option(..., prompt=True),
     url = base_url +'list_nexrad_files_as_dropdown'
     prefix = '{}/{}/{}/{}/'.format(year_nexrad,month_of_year_nexrad,day_of_month_nexrad,selected_stationcode)
 
-    response = requests.get(url,params={"bucket_name":bucket,"prefix":prefix}).json()
+    response = requests.get(url,params={"bucket_name":bucket,"prefix":prefix},headers=headers).json()
     typer.echo(response)
 
 
@@ -86,7 +88,6 @@ def fetchCoordinates():
     """
 
     url = base_url + 'coordinatesdata'
-    token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNjc3ODA2NzAwfQ.iY_cUl0EbvrFrbCdMiG6jsVKNe_iJznU1-kwagHX47Y'
     headers = {"Authorization": f"Bearer {token}"}
 
     response = requests.get(url,headers=headers)
