@@ -2,7 +2,7 @@ import sqlite3
 import pandas as pd
 import requests
 import os
-db_path = 'data/login.dbo'
+db_path = 'data/register_users.dbo'
 sql_path = 'sql/db_users.sql'
 scriptdir = os.path.dirname(__file__)
 db_path = os.path.join(scriptdir, db_path)

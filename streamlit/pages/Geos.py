@@ -13,7 +13,7 @@ import requests
 from bs4 import BeautifulSoup
 import time
 import sys
-
+import json
 #---------------------------------------------------------------------------------------------------------------
 #                            Connection Declarations
 #---------------------------------------------------------------------------------------------------------------
@@ -36,6 +36,14 @@ bucket = 'noaa-goes18'
 prefix = 'ABI-L1b-RadC/'
 USER_BUCKET_NAME = os.environ.get('USER_BUCKET_NAME')
 
+#---------------------------------------------------------------------------------------------------------------
+#                            Function Definitions
+#---------------------------------------------------------------------------------------------------------------
+#
+
+def json_data(js):
+    data = json.loads(js)
+    return list(data.values())
 
 #---------------------------------------------------------------------------------------------------------------
 #                            Streamlit Code
@@ -58,27 +66,27 @@ if st.session_state['access_token'] != '':
         #Selecting Year
         year_geos = st.selectbox(
             'Please select the year',
-            options=response['years'])
+            options=response)
         
         #Retrieving day of year
         url = str(os.environ.get('URL')) + 'retrieve_goes_day_of_year'
-        response = requests.get(url,headers=headers,params=year_geos).json()
+        response = requests.get(url,headers=headers,params={"year":year_geos}).json()
         
         #Day of Year
-        day_of_year_geos = st.selectbox('Please select the Day of Year',options=response['day_of_year'])
+        day_of_year_geos = st.selectbox('Please select the Day of Year',options=response)
 
         #Retrieving hours
         url = str(os.environ.get('URL')) + 'retrieve_goes_hours'
-        response = requests.get(url,headers=headers,params=(year_geos,day_of_year_geos,)).json()
+        response = requests.get(url,headers=headers,params={"year":year_geos,"day_of_year":day_of_year_geos}).json()
 
-        hour_of_day = st.selectbox('Please select the Hour',options=response['hours'])
+        hour_of_day = st.selectbox('Please select the Hour',options=response)
 
         #Retrieving Files as dropdown
         prefix = 'ABI-L1b-RadC/{}/{}/{}/'.format(year_geos,day_of_year_geos,hour_of_day)
         url = str(os.environ.get('URL')) + 'list_goes_files_as_dropdown'
-        response = requests.get(url,headers=headers,params=(bucket,prefix,)).json()
+        response = requests.get(url,headers=headers,params={"bucket":bucket,"prefix":prefix}).json()
 
-        selected_file = st.selectbox("Select file for download:", options =response['files'])
+        selected_file = st.selectbox("Select file for download:", options=response)
 
         #Transfering selected file to S3 bucket 
         if st.button('Submit'):
@@ -102,7 +110,7 @@ if st.session_state['access_token'] != '':
                         st.write("S3 Public GOES link :",data['S3-Public'])
                         #Log the download if successful
                         url = str(os.environ.get('URL')) + 'log_file_download'
-                        response = requests.get(url,headers=headers,params=(selected_file,timestamp,bucket,))
+                        response = requests.get(url,headers=headers,params={"file_name":selected_file,"timestamp":timestamp,"dataset":bucket})
                     
                 except:
                     st.error("An error occured")

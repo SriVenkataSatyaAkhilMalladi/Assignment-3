@@ -14,9 +14,8 @@ import os
 #                            Connection Declarations
 #---------------------------------------------------------------------------------------------------------------
 #
-mod_path = Path(__file__).parent
-relative_path_2 = 'data/s3_goes.dbo'
-db_path = (mod_path / relative_path_2).resolve()
+
+db_path = 'data/s3_goes.dbo'
 
 router_goes_db = APIRouter()
 load_dotenv()
@@ -33,34 +32,37 @@ s3client = boto3.client('s3',region_name='us-east-1',
 #---------------------------------------------------------------------------------------------------------------
 #
 
-@router_goes_db.get('/retrieve_goes_years')
+@router_goes_db.get('/retrieve_goes_years',tags=['GOES'])
 def retrieve_goes_years():
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     query = "SELECT distinct year FROM folders"
     df = pd.read_sql_query(query, conn)
+    tdf = df['year'].tolist()
     conn.close()
-    return {"years":df}
+    return tdf
 
-@router_goes_db.get('/retrieve_goes_day_of_year')
+@router_goes_db.get('/retrieve_goes_day_of_year',tags=['GOES'])
 def retrieve_goes_day_of_year(year:str):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     query = "SELECT distinct day_of_year FROM folders where year = ?"
     df = pd.read_sql_query(query, conn,params=(year,))
+    tdf = df['day_of_year'].tolist()
     conn.close()
-    return {"day_of_year":df}
+    return tdf
 
-@router_goes_db.get('/retrieve_goes_hours')
+@router_goes_db.get('/retrieve_goes_hours',tags=['GOES'])
 def retrieve_goes_hours(year:str,day_of_year:str):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     query = "SELECT distinct hour FROM folders where year = ? and day_of_year = ?"
     df = pd.read_sql_query(query, conn,params=(year,day_of_year))
+    tdf = df['hour'].tolist()
     conn.close()
-    return {"hours":df}
+    return tdf
 
-@router_goes_db.get('/log_file_download')
+@router_goes_db.get('/log_file_download',tags=['GOES'])
 def log_file_download(file_name, timestamp,dataset):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
@@ -71,10 +73,10 @@ def log_file_download(file_name, timestamp,dataset):
     conn.close()
     return {"Success"}
 
-@router_goes_db.get('/list_goes_files_as_dropdown')
-def list_goes_files_as_dropdown(bucket_name:str, prefix:str):
+@router_goes_db.get('/list_goes_files_as_dropdown',tags=['GOES'])
+def list_goes_files_as_dropdown(bucket:str, prefix:str):
 
-    result = s3client.list_objects(Bucket=bucket_name, Prefix=prefix, Delimiter ='/')
+    result = s3client.list_objects(Bucket=bucket, Prefix=prefix, Delimiter ='/')
     object_list = [x["Key"].split("/")[-1] for x in result["Contents"]]
-    return {"files":object_list}
+    return object_list
     
