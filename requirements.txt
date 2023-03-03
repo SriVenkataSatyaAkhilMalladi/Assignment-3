@@ -59,7 +59,6 @@ Flask-WTF==1.1.1
 fonttools==4.38.0
 gitdb==4.0.10
 GitPython==3.1.31
-goesNexrad @ file:///home/chromite/projects/Assignment-3/cli
 graphviz==0.20.1
 greenlet==2.0.1
 gunicorn==20.1.0
@@ -173,5 +172,4 @@ websockets==10.4
 Werkzeug==2.2.2
 wrapt==1.14.1
 WTForms==3.0.1
-yourcli @ file:///home/chromite/projects/Assignment-3/yourcli
 zipp==3.14.0
