@@ -22,14 +22,13 @@ def login():
     username = st.text_input("Username",key="username")
     password = st.text_input("Password",type="password",key="password")
     if st.button("Login"):
-        url = str(os.environ.get('URL')) + "token"
+        url = 'http://localhost:8080/' + "token"
         response = requests.post(url,data={"username": username, "password": password})        
         if response.status_code == 200:
             res = response.json()
             access_token = res['access_token']
             st.session_state['access_token'] = access_token
             st.success("Logged in as {}".format(username))
-            st.write(type(access_token))
             return True # return True after a successful login
         else:
             st.error("Invalid username or password")
@@ -55,8 +54,7 @@ def show_main_app():
 
 
 def main():
-    if login():
-        print("great")
+    login()
 
 
 if __name__ == "__main__":

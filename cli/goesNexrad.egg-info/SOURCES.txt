@@ -1,0 +1,9 @@
+setup.py
+cli/_init_.py
+cli/goesNexrad.py
+goesNexrad.egg-info/PKG-INFO
+goesNexrad.egg-info/SOURCES.txt
+goesNexrad.egg-info/dependency_links.txt
+goesNexrad.egg-info/entry_points.txt
+goesNexrad.egg-info/requires.txt
+goesNexrad.egg-info/top_level.txt
