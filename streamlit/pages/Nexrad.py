@@ -12,18 +12,13 @@ import requests
 from bs4 import BeautifulSoup
 import time
 
-#Custom imports
-import nexrad_db,url_generator,goes_db
 
-retieve_days = nexrad_db.retieve_days
-retieve_months = nexrad_db.retieve_months
-retieve_stations = nexrad_db.retieve_stations
 
-url_gen_nexrad = url_generator.url_gen_nexrad
-file_validator_nexrad = url_generator.file_validator_nexrad
-log_file_download = goes_db.log_file_download
+#---------------------------------------------------------------------------------------------------------------
+#                            Connection Declarations
+#---------------------------------------------------------------------------------------------------------------
+#
 
-# from IPython.core.display import display, HTML
 load_dotenv()
 
 st.header("Explore the NEXRAD Dataset")
@@ -32,55 +27,65 @@ s3client = boto3.client('s3',region_name='us-east-1',
                         aws_access_key_id = os.environ.get('AWS_ACCESS_KEY'),
                         aws_secret_access_key = os.environ.get('AWS_SECRET_KEY'))
 
+#---------------------------------------------------------------------------------------------------------------
+#                            Variable Declarations
+#---------------------------------------------------------------------------------------------------------------
+#
 bucket = 'noaa-nexrad-level2'
 
 prefix = 'ABI-L1b-RadC/'
 USER_BUCKET_NAME = os.environ.get('USER_BUCKET_NAME')
 
+
+#---------------------------------------------------------------------------------------------------------------
+#                            streamlit code
+#---------------------------------------------------------------------------------------------------------------
+#
 col1, col2 = st.columns(2, gap = 'large')
 if st.session_state['access_token'] != '':
     with col1:
         st.header("Search using fields ")
+        headers = {"Authorization": f"Bearer {st.session_state['access_token']}"}
 
-
-            
-        def list_files_as_dropdown(bucket_name, prefix):
-            try:
-                result = s3client.list_objects(Bucket=bucket_name, Prefix=prefix, Delimiter ='/')
-                object_list = [x["Key"].split("/")[-1] for x in result["Contents"]]
-                return object_list
-            except Exception as e:
-                st.write("An error occurred:", e)
-                return None
 
         #Selecting Year
         year_nexrad = st.selectbox(
             'Please select the year',
             ('2022', '2023'))
         
+        url = str(os.environ.get('URL')) + 'retieve_nexrad_months'
+        response = requests.get(url,headers=headers,params={"year":year_nexrad}).json()
+        
         #Month of Year
-        month_of_year_nexrad = st.selectbox('Please select the Month',options=retieve_months(year_nexrad))
+        month_of_year_nexrad = st.selectbox('Please select the Month',options=response)
+
+        url = str(os.environ.get('URL')) + 'retieve_nexrad_days'
+        response = requests.get(url,headers=headers,params={"year":year_nexrad,"month":month_of_year_nexrad}).json()
+        
 
         #Day of Month
-        day_of_month_nexrad = st.selectbox('Please select the Day of the month',options=retieve_days(year_nexrad,month_of_year_nexrad))
+        day_of_month_nexrad = st.selectbox('Please select the Day of the month',options=response)
 
-    
+        url = str(os.environ.get('URL')) + 'retieve_nexrad_stations'
+        response = requests.get(url,headers=headers,params={"year":year_nexrad,"month":month_of_year_nexrad,"day":day_of_month_nexrad}).json()
+        
 
         #Station code selector 
         
-        selected_stationcode = st.selectbox('Please select the station',options=retieve_stations(year_nexrad,month_of_year_nexrad,day_of_month_nexrad),key='day')
+        selected_stationcode = st.selectbox('Please select the station',options=response,key='day')
 
 
 
         #MADE CHANGES TO BELOW FUNCTION - ADDED PREFIX_FILE 
         prefix_file = '{}/{}/{}/{}/'.format(year_nexrad,month_of_year_nexrad,day_of_month_nexrad,selected_stationcode)
-        bucket = 'noaa-nexrad-level2'
+
+
+        url = str(os.environ.get('URL')) + 'list_nexrad_files_as_dropdown'
+        response = requests.get(url,headers=headers,params={"bucket_name":bucket,"prefix":prefix_file}).json()
 
 
         #Filename selector 
-        object_list = list_files_as_dropdown(bucket, prefix_file)
-        if(object_list != None):
-            selected_file = st.selectbox("Select file for download:", object_list,key='file')
+        selected_file = st.selectbox("Select file for download:", options=response,key='file')
 
 
         #Transfering selected file to S3 bucket 
@@ -97,7 +102,8 @@ if st.session_state['access_token'] != '':
                 st.write("S3 Public GOES link :",data['S3-Public'])
 
                 timestamp = time.time()
-                log_file_download(selected_file,timestamp,bucket)
+                url = str(os.environ.get('URL')) + 'log_file_download'
+                response = requests.get(url,headers=headers,params={"file_name":selected_file,"timestamp":timestamp,"dataset":bucket})
                 
 
 
