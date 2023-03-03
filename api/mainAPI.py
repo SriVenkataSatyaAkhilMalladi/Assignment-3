@@ -4,7 +4,6 @@ from api import jwt,metadata_geos,metadata_nexrad,file_url_generator,nexrad_coor
 from datetime import datetime
 import logging
 from jose import jwt as jwt_pck
-from jwt.exceptions import InvalidTokenError
 app = FastAPI()
 
 app.include_router(jwt.router_jwt)
@@ -35,19 +34,7 @@ file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
-    username = 'default'
-    if request.headers.get('Authorization'):
-
-        token = request.headers.get('Authorization')
-        SECRET_KEY = "e1b6b2c8f1669af6ac695ebb7b3e979b519cdd831a54be0a112c1904c43f3cc7"
-        try:
-
-            decoded_token = jwt_pck.decode(token, SECRET_KEY, algorithms='HS256')
-            username = decoded_token['sub']
-        except:
-            username = 'default'
-
-
+    username = 'test'
     response = await call_next(request)
     log_dict = {
         "username": username,

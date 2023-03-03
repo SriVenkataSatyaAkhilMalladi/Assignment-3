@@ -58,7 +58,7 @@ def get_password_hash(password):
 
 def get_user(conn, username: str): 
 
-    query = 'select * from login where username = ?'
+    query = 'select * from user_data where username = ?'
     results = next(db.query(query,(username,)))
     
     return UserInDB(**results)

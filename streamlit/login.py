@@ -9,6 +9,8 @@ from fastapi import Form
 from pydantic import BaseModel
 import os
 
+
+base_url = os.environ.get('URL')
 st.session_state['access_token']= ''
 
 class Login:
@@ -22,7 +24,7 @@ def login():
     username = st.text_input("Username",key="username")
     password = st.text_input("Password",type="password",key="password")
     if st.button("Login"):
-        url = 'http://localhost:8080/' + "token"
+        url = str(base_url) + "token"
         response = requests.post(url,data={"username": username, "password": password})        
         if response.status_code == 200:
             res = response.json()
@@ -33,24 +35,6 @@ def login():
         else:
             st.error("Invalid username or password")
     return False
-
-# define the Streamlit main application
-def show_main_app():
-    # st.title("Main Application")
-    # st.write("Welcome to the main application!")
-    url = "http://localhost:8080/users/me"
-    #token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNjc3MTI5MTgwfQ.71FkTnZBGyLT1fbz0E0WQMMVFz2H_0injbiTZLVHBS0"
-    headers = {"Authorization": f"Bearer {st.session_state['access_token']}"}
-    response = requests.get(url, headers=headers)
-
-    # check response
-    if response.status_code == 200:
-        print(response.json())
-    else:
-        print("Request failed with status code:", response.status_code)
-        # add the rest of your application code here
-
-
 
 
 def main():
