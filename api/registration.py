@@ -47,7 +47,7 @@ async def register_user(user: User):
     users['registered_time'].append(registered_time)
 
 # Define the table schema
-    conn = sqlite3.connect('register_users.db')
+    conn = sqlite3.connect('data/register_users.db')
     c = conn.cursor()
 
     c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='USER_DATA'")
@@ -57,23 +57,21 @@ async def register_user(user: User):
         print("The users table already exists")
         
         for i in range(len(users['username'])):
-            query = "INSERT INTO USER_DATA (username, hashed_password, plan) VALUES (?, ?, ?)"
-            c.execute(query, (users['username'][i], users['hashed_password'][i], users['plan'][i]))
-            # query = "INSERT INTO USER_DATA (username, hashed_password, plan, registered_time) VALUES (?, ?, ?, ?)"
-            # c.execute(query, (users['username'][i], users['hashed_password'][i], users['plan'][i], users['registered_time'][i]))
+            # query = "INSERT INTO USER_DATA (username, hashed_password, plan) VALUES (?, ?, ?)"
+            # c.execute(query, (users['username'][i], users['hashed_password'][i], users['plan'][i]))
+            query = "INSERT INTO USER_DATA (username, hashed_password, plan, registered_time) VALUES (?, ?, ?, ?)"
+            c.execute(query, (users['username'][i], users['hashed_password'][i], users['plan'][i], users['registered_time'][i]))
 
         print("ran till here")
         if HTTPException(status_code=500, detail="User already regsitered, please navigate to login"):
             print("User already exists")
 
-        else:
-            raise HTTPException(status_code=200, detail="User registered successfully")
     
     #Table does not exist
     else:
         print("The users table does not exist")
         c.execute('''CREATE TABLE USER_DATA
-                (username TEXT PRIMARY KEY, hashed_password TEXT, plan TEXT)''')
+                (username TEXT PRIMARY KEY, hashed_password TEXT, plan TEXT,registered_time TEXT)''')
 
         for i in range(len(users['username'])):
             query = "INSERT INTO USER_DATA (username, hashed_password, plan, registered_time) VALUES (?, ?, ?, ?)"

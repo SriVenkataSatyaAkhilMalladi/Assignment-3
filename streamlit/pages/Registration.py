@@ -12,23 +12,42 @@ import bcrypt
 API_URL = "http://localhost:8080"
 
 def Registration():
-    if st.button("Register"):
-        hashed_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
-        url = "http://localhost:8080/register"
-        response = requests.post(url, json={"username": username, "password": hashed_password, "plan": plan})
-        if response.status_code == 200:
-            st.success("User registered successfully")
-        elif response.status_code == 500:
-            st.warning("User already registered")
-        else:
-            st.error("Failed to register user")
+    
+    hashed_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+    url = "http://localhost:8080/register"
+    response = requests.post(url, json={"username": username, "password": hashed_password, "plan": plan})
+    if response.status_code == 200:
+        st.success("User registered successfully")
+    elif response.status_code == 500:
+        st.warning("User already registered")
+    else:
+        st.error("Failed to register user")
 
 st.title("User Registration")
 
 username = st.text_input("Username")
 password = st.text_input("Password", type="password")
 plan = st.selectbox("Plan", ["Free", "Gold", "Platinum"])
-Registration()
+if st.button("Register"):   
+    Registration()
+
+
+if st.button("Change Password"):
+    new_password = st.text_input("Create new password", type="password")
+    confirm_password = st.text_input("Confirm new password", type="password")
+    if st.button("Update"):
+
+        if new_password != confirm_password:
+            st.error("Password does not match")
+        else:
+            
+            response = requests.put(f"{API_URL}/users/{username}/password", json={"password": new_password})
+
+            if response.status_code == 200:
+                st.success("Password updated successfully.")
+            else:
+                st.error("Error updating password.")
+
 
 
     
