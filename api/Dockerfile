@@ -1,6 +1,6 @@
 FROM python:3.10.6-buster
 
-WORKDIR /ass2
+WORKDIR /ass3
 
 RUN apt-get update && apt-get install -y \
     build-essential \

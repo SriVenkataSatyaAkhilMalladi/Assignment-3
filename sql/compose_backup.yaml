@@ -1,6 +1,6 @@
 services:
   api:
-    image: thejasbh/fastapi:3e82efd
+    image: thejasbh/fastapi:0dd6462
     container_name: fastapi.latest
     environment:
       PORT: 8080
@@ -8,9 +8,9 @@ services:
       - "8080:8080"
     restart: "no"
     volumes:
-      - .:/ass3
+      - .:/ass2
   streamlit:
-    image: thejasbh/streamlit:3e82efd
+    image: thejasbh/streamlit:0dd6462
     container_name: streamlit.latest
     environment:
         PORT: 8501
@@ -18,6 +18,6 @@ services:
       - '8501:8501'
     restart: "no"
     volumes:
-      - .:/ass3
+      - .:/ass2
     env_file:
       - ./.env

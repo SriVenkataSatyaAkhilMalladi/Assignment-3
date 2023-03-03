@@ -14,6 +14,8 @@ from bs4 import BeautifulSoup
 import time
 import sys
 import json
+
+
 #---------------------------------------------------------------------------------------------------------------
 #                            Connection Declarations
 #---------------------------------------------------------------------------------------------------------------
@@ -63,6 +65,7 @@ if st.session_state['access_token'] != '':
 
         url = str(os.environ.get('URL')) + 'retrieve_goes_years'
         response = requests.get(url,headers=headers).json()
+       #store log responses from api
         #Selecting Year
         year_geos = st.selectbox(
             'Please select the year',
@@ -71,9 +74,11 @@ if st.session_state['access_token'] != '':
         #Retrieving day of year
         url = str(os.environ.get('URL')) + 'retrieve_goes_day_of_year'
         response = requests.get(url,headers=headers,params={"year":year_geos}).json()
-        
+       #store log responses from api
+
         #Day of Year
         day_of_year_geos = st.selectbox('Please select the Day of Year',options=response)
+       #store log responses from api
 
         #Retrieving hours
         url = str(os.environ.get('URL')) + 'retrieve_goes_hours'
@@ -104,7 +109,8 @@ if st.session_state['access_token'] != '':
                     response = requests.get(url,headers=headers,params=name_of_file)
                     timestamp = time.time()
                     data = response.json()
-                    
+   
+
                     if response.status_code ==  200:
                         st.write("S3 Team Bucket link :",data['S3-Personal'])
                         st.write("S3 Public GOES link :",data['S3-Public'])

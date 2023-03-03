@@ -54,46 +54,47 @@ async def register_user(user: User):
     users['email'] = "{}@gmail.com".format(user.username)
     users['status'] = "active"
 # Define the table schema
-    conn = sqlite3.connect('data/register_users.db')
+    conn = sqlite3.connect('data/register_users.dbo')
     c = conn.cursor()
 
-    c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='USER_DATA'")
-    table_exists = c.fetchone()
+    # c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='USER_DATA'")
+    # table_exists = c.fetchone()
 
-    if table_exists:
-        print("The users table already exists")
-        
+    # if table_exists:
+    # print("The users table already exists")
+    try:
         for i in range(len(users['username'])):
-            query = "INSERT INTO USER_DATA (username, password, plan, email, status, role, register_time) VALUES (?, ?, ?, ?, ?, ?, ?)"
-            c.execute(query, (users['username'][i], users['password'][i], users['plan'][i], users['email'][i], users['status'][i], users['role'][i], users['register_time'][i]))
+            query = "INSERT INTO USER_DATA (username, email, password, status, role, plan, register_time) VALUES (?, ?, ?, ?, ?, ?, ?)"
+            c.execute(query, (users['username'][i], users['email'][i], users['password'][i], users['status'][i], users['role'][i], users['plan'][i], users['register_time'][i]))
             # query = "INSERT INTO USER_DATA (username, hashed_password, plan, registered_time) VALUES (?, ?, ?, ?)"
             # c.execute(query, (users['username'][i], users['hashed_password'][i], users['plan'][i], users['registered_time'][i]))
 
         print("ran till here")
-        if HTTPException(status_code=500, detail="User already regsitered, please navigate to login"):
-            print("User already exists")
+    except:
+        HTTPException(status_code=500, detail="User already regsitered, please navigate to login")
+        print("User already exists")
 
-        else:
-            raise HTTPException(status_code=200, detail="User registered successfully")
+    # except:
+    #     raise HTTPException(status_code=200, detail="User registered successfully")
     
 
     
-    #Table does not exist
-    else:
-        print("The users table does not exist")
-        c.execute('''CREATE TABLE USER_DATA
-                (username TEXT PRIMARY KEY, password TEXT, plan TEXT, email TEXT, status TEXT, role TEXT, register_time TEXT )''')
+    # #Table does not exist
+    # else:
+    #     print("The users table does not exist")
+    #     c.execute('''CREATE TABLE USER_DATA
+    #             (username TEXT PRIMARY KEY, password TEXT, plan TEXT, email TEXT, status TEXT, role TEXT, register_time TEXT )''')
 
-        for i in range(len(users['username'])):
-            query = "INSERT INTO USER_DATA (username, password, plan, email, status, role, register_time) VALUES (?, ?, ?, ?, ?, ?, ?)"
-            c.execute(query, (users['username'][i], users['password'][i], users['plan'][i],users['email'][i], users['status'][i], users['role'][i], users['register_time'][i]))
-            raise HTTPException(status_code=200, detail="User registered successfully")
+    #     for i in range(len(users['username'])):
+    #         query = "INSERT INTO USER_DATA (username, password, plan, email, status, role, register_time) VALUES (?, ?, ?, ?, ?, ?, ?)"
+    #         c.execute(query, (users['username'][i], users['password'][i], users['plan'][i],users['email'][i], users['status'][i], users['role'][i], users['register_time'][i]))
+    #         raise HTTPException(status_code=200, detail="User registered successfully")
         
-        print("query executed")
-    # Commit changes and close the connection
-    conn.commit()
-    conn.close()
-    # print("added in table")
+    #     print("query executed")
+    # # Commit changes and close the connection
+    # conn.commit()
+    # conn.close()
+    # # print("added in table")
 
 
     
@@ -123,7 +124,7 @@ async def update_password(username: str, password: str, confirm_password:str):
       
         # users[username]["hashed_password"] = hashed_password
         print("running till here")
-        raise HTTPException(status_code=200, detail="Password updated successfully.")
+        # c.execute(status_code=200, detail="Password updated successfully.")
         # return {"message": "Password updated successfully."}
     else:
         raise HTTPException(status_code=500, detail="User not found")
