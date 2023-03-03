@@ -17,7 +17,7 @@ from datetime import datetime
 jwt = api.jwt
 router_register_user = APIRouter()
 router_update_password = APIRouter()
-router_get_count = APIRouter()
+
 
 class User(BaseModel):
     username: str
@@ -27,9 +27,14 @@ class User(BaseModel):
 users = {
     'username': [],
     # 'password':[],
-    'hashed_password': [],
+    'password': [],
     'plan':[],
-    'registered_time':[],
+    'register_time':[],
+    'plan':[],
+    'role':[],
+    'email':[],
+    'status':[],
+
 }
 
 
@@ -39,13 +44,15 @@ async def register_user(user: User):
         raise HTTPException(status_code=400, detail="Username already registered")
 
     hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
-    hashed_password = str(hashed_password)
+    password = str(hashed_password)
     registered_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     users['username'].append(user.username)   #map all scraped data into the dict
-    users['hashed_password'].append(hashed_password)
+    users['password'].append(password)
     users['plan'].append(user.plan)
-    users['registered_time'].append(registered_time)
-
+    users['register_time'].append(registered_time)
+    users['role'] = "user"
+    users['email'] = "{}@gmail.com".format(user.username)
+    users['status'] = "active"
 # Define the table schema
     conn = sqlite3.connect('data/register_users.db')
     c = conn.cursor()
@@ -57,51 +64,57 @@ async def register_user(user: User):
         print("The users table already exists")
         
         for i in range(len(users['username'])):
-            # query = "INSERT INTO USER_DATA (username, hashed_password, plan) VALUES (?, ?, ?)"
-            # c.execute(query, (users['username'][i], users['hashed_password'][i], users['plan'][i]))
-            query = "INSERT INTO USER_DATA (username, hashed_password, plan, registered_time) VALUES (?, ?, ?, ?)"
-            c.execute(query, (users['username'][i], users['hashed_password'][i], users['plan'][i], users['registered_time'][i]))
+            query = "INSERT INTO USER_DATA (username, password, plan, email, status, role, register_time) VALUES (?, ?, ?, ?, ?, ?, ?)"
+            c.execute(query, (users['username'][i], users['password'][i], users['plan'][i], users['email'][i], users['status'][i], users['role'][i], users['register_time'][i]))
+            # query = "INSERT INTO USER_DATA (username, hashed_password, plan, registered_time) VALUES (?, ?, ?, ?)"
+            # c.execute(query, (users['username'][i], users['hashed_password'][i], users['plan'][i], users['registered_time'][i]))
 
         print("ran till here")
         if HTTPException(status_code=500, detail="User already regsitered, please navigate to login"):
             print("User already exists")
+
+        else:
+            raise HTTPException(status_code=200, detail="User registered successfully")
+    
 
     
     #Table does not exist
     else:
         print("The users table does not exist")
         c.execute('''CREATE TABLE USER_DATA
-                (username TEXT PRIMARY KEY, hashed_password TEXT, plan TEXT,registered_time TEXT)''')
+                (username TEXT PRIMARY KEY, password TEXT, plan TEXT, email TEXT, status TEXT, role TEXT, register_time TEXT )''')
 
         for i in range(len(users['username'])):
-            query = "INSERT INTO USER_DATA (username, hashed_password, plan, registered_time) VALUES (?, ?, ?, ?)"
-            c.execute(query, (users['username'][i], users['hashed_password'][i], users['plan'][i], users['registered_time'][i]))
+            query = "INSERT INTO USER_DATA (username, password, plan, email, status, role, register_time) VALUES (?, ?, ?, ?, ?, ?, ?)"
+            c.execute(query, (users['username'][i], users['password'][i], users['plan'][i],users['email'][i], users['status'][i], users['role'][i], users['register_time'][i]))
             raise HTTPException(status_code=200, detail="User registered successfully")
         
         print("query executed")
     # Commit changes and close the connection
     conn.commit()
     conn.close()
-    print("added in table")
+    # print("added in table")
 
 
     
 
 
-@router_update_password.put("/users/{username}/password")
-async def update_password(username: str, password: str):
+@router_update_password.put("/update_password")
+async def update_password(username: str, password: str, confirm_password:str):
    
     # Update the user's password in the dictionary
     # if username in users['username']:
-    if password != " ":
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        conn = sqlite3.connect('register_users.db')
+    if password != confirm_password:
+        raise HTTPException(status_code=400, detail="Passwords do not match")
+    elif password != " ":
+        password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        conn = sqlite3.connect('data/register_users.dbo')
         c = conn.cursor()
         # for i in range(len(users['username'])):
             # query = "INSERT INTO USER_DATA (username, hashed_password, plan) VALUES (?, ?, ?)"
             # c.execute(query, (users['username'][i], users['hashed_password'][i], users['plan'][i]))
-        query = "UPDATE USER_DATA SET hashed_password = ? WHERE username = ?"
-        c.execute(query, (hashed_password, username))
+        query = "UPDATE USER_DATA SET password = ? WHERE username = ?"
+        c.execute(query, (password, username))
 
         # users[username]["password"] = password 
         #not storing password enetered^ stored hashed password
