@@ -8,7 +8,7 @@ from pydantic import BaseModel
 import sqlite3
 from sqlite_utils import Database
 import json
-
+import time
 # to get a string like this run:
 # openssl rand -hex 32
 SECRET_KEY = "e1b6b2c8f1669af6ac695ebb7b3e979b519cdd831a54be0a112c1904c43f3cc7"
@@ -60,7 +60,8 @@ def get_user(conn, username: str):
 
     query = 'select * from user_data where username = ?'
     results = next(db.query(query,(username,)))
-    
+    conn.commit()
+    conn.close()
     return UserInDB(**results)
 
 
@@ -114,6 +115,7 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
 
 @router_jwt.post('/token', response_model=Token)
 async def login_for_access_token(input: OAuth2PasswordRequestForm = Depends()):
+    time.sleep(2)
     user = authenticate_user(conn, input.username, input.password)
     if not user:
         raise HTTPException(

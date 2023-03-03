@@ -4,7 +4,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 
 # Connect to the SQLite database file
-conn = sqlite3.connect('../../data/register_users.dbo')
+conn = sqlite3.connect('data/register_users.dbo')
 
 # Define the query to fetch user details based on the given username
 query = "SELECT role, plan FROM user_data WHERE username = ?"

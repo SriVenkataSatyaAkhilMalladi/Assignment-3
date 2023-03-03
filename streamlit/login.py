@@ -10,7 +10,7 @@ from pydantic import BaseModel
 import os
 from datetime import datetime
 
-API_URL = "http://localhost:8080"
+BASE_URL = "http://fastapi.latest:8080/"
 options = ["Login", "User Registration", "Update Password"]
 selected_option = st.radio("Select an option", options)
 
@@ -26,7 +26,7 @@ if selected_option == "Login":
     username = st.text_input("Username",key="username")
     password = st.text_input("Password",type="password",key="password")
     if st.button("Login"):
-        url = 'http://localhost:8080/' + "token"
+        url = BASE_URL + "token"
         response = requests.post(url,data={"username": username, "password": password})        
         if response.status_code == 200:
             res = response.json()
@@ -94,7 +94,7 @@ elif selected_option == "Update Password":
                 st.error("Password does not match")
             else:
                 
-                response = requests.put(f"{API_URL}/update_password", json={"username": username, "password": new_password, "confirm_password": confirm_password})
+                response = requests.put(f"{BASE_URL}/update_password", json={"username": username, "password": new_password, "confirm_password": confirm_password})
 
                 if response.status_code == 200:
                     st.success("Password updated successfully.")
