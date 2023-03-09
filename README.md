@@ -2,7 +2,9 @@
 #Hosted on AWS EC2
 
 Streamlit - http://ec2-52-45-166-0.compute-1.amazonaws.com:8501/
+
 FastAPI Docs - http://ec2-52-45-166-0.compute-1.amazonaws.com:8080/docs#/
+
 AWS Report - https://greatexpectationsteam01.s3.amazonaws.com/index.html
 Reference:
 
@@ -37,7 +39,7 @@ This contains all the streamlit pages and use the api calls from /api folder to 
  ````
   docker compose up -d --build
  ````
- link to documentation: https://codelabs-preview.appspot.com/?file_id=1byqVFAzj4xZLyOtLGMt0_uuTBnVcbpq4XGSq8Yxn6pQ#0
+ link to documentation: https://codelabs-preview.appspot.com/?file_id=1WeY9z0c7sudPQ1AYpLt4cTWWUyIIraKTsfUFj3M1DmY#0
  ## Declaration 
  Contribution 
  
