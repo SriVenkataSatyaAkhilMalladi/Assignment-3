@@ -6,7 +6,8 @@ Streamlit - http://ec2-52-45-166-0.compute-1.amazonaws.com:8501/
 FastAPI Docs - http://ec2-52-45-166-0.compute-1.amazonaws.com:8080/docs#/
 
 AWS Report - https://greatexpectationsteam01.s3.amazonaws.com/index.html
-Reference:
+
+Refrence:
 
 ## api folder /api
 This folder contains all the api method functions and their respective functional dependencies. They are named as per the functionality - for example: api/metadata_geos.py - contains the api methods for extracting metadata from the Public aws geos bucket to a database.
