@@ -26,7 +26,7 @@ This contains all the streamlit pages and use the api calls from /api folder to 
 2. Browse the location where you want to clone the repository
 3. Write the following command and press enter 
 ````
-  git clone https://github.com/BigDataIA-Spring2023-Team-01/Assignment-2.git
+  git clone https://github.com/BigDataIA-Spring2023-Team-01/Assignment-3.git
  ````
  4. Create a virtual environment using the following command
  ````
@@ -36,10 +36,21 @@ This contains all the streamlit pages and use the api calls from /api folder to 
  ````
   pip install -r /path/to/requirements.txt
  ````
-6. User docker compose to run both FastAPI and Streamlit containers.
+6. Create a .env file inside the main directory /Assignment-3 and ppoulate the below fields
  ````
-  docker compose up -d --build
+  AIRFLOW_UID= <The UID of the server of airflow>
+  AIRFLOW_PROJ_DIR=<Base Directory of Airflow. For example ./airflow>
+  AWS_ACCESS_KEY = <Your AWS_ACCESS_KEY>
+  AWS_SECRET_KEY = <Your AWS_SECRET_KEY>
+  USER_BUCKET_NAME = team01
+  URL = <URL of the FASTAPI application>
+  SECRET_KEY = <SECRET_KEY used to hash the token>
+
  ````
+7. User docker compose to run both FastAPI and Streamlit containers.
+````
+docker compose up -d --build
+````
  link to documentation: https://codelabs-preview.appspot.com/?file_id=1WeY9z0c7sudPQ1AYpLt4cTWWUyIIraKTsfUFj3M1DmY#0
  ## Declaration 
  Contribution 
