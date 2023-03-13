@@ -97,7 +97,7 @@ def check_file_in_S3public_geos(filename: str):
             return False
             
 @router_file_url_generator.get("/filename_url_gen_goes")
-def filename_url_gen_goes(filename: str):
+def filename_url_gen_goes(filename: str,current_user: jwt.User = jwt.Depends(jwt.get_current_active_user)):
     # define the expected format for the file name
     expected_format = "OR_ABI-L1b-RadC-M6C01_G18_s{year}{day}{hour}{time}_{end_time}_c{creation_time}.nc"
 
@@ -129,7 +129,7 @@ def filename_url_gen_goes(filename: str):
     
 
 @router_file_url_generator.get("/filename_url_gen_nexrad")
-def filename_url_gen_nexrad(filename: str) -> Dict[str, Any]:
+def filename_url_gen_nexrad(filename: str,current_user: jwt.User = jwt.Depends(jwt.get_current_active_user)) -> Dict[str, Any]:
 
     # expected_format = "{nexrad_station}{year}{month}{day}_{time}_V06"
     pattern = r'^\w{4}\d{8}_\d{6}(?:_V06|_V03)?(?:\.gz)?$'
@@ -152,7 +152,7 @@ def filename_url_gen_nexrad(filename: str) -> Dict[str, Any]:
 
 
 @router_file_url_generator.get('/url_generator_geos')
-def url_gen_goes(input:str):
+def url_gen_goes(input:str,current_user: jwt.User = jwt.Depends(jwt.get_current_active_user)):
     # write_logs(message="url_generator_starts")
     arr = input.split("_")
     tproduct_code = arr[1].split("-")
@@ -168,7 +168,7 @@ def url_gen_goes(input:str):
 
 
 @router_file_url_generator.get('/url_generator_nexrad')
-def url_gen_nexrad(input):
+def url_gen_nexrad(input:str,current_user: jwt.User = jwt.Depends(jwt.get_current_active_user)):
     arr = input.split("_")[0]
     year, day, hour, station = arr[4:8], arr[8:10], arr[10:12], arr[0:4]
     fs = "https://noaa-nexrad-level2.s3.amazonaws.com/{}/{}/{}/{}/{}".format(year,day,hour,station,input)

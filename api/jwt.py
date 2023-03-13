@@ -60,8 +60,6 @@ def get_user(conn, username: str):
 
     query = 'select * from user_data where username = ?'
     results = next(db.query(query,(username,)))
-    conn.commit()
-    conn.close()
     return UserInDB(**results)
 
 

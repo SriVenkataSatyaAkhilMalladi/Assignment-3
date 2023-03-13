@@ -4,8 +4,7 @@ import os
 import requests
 from fastapi import APIRouter
 import boto3
-import api.jwt
-jwt = api.jwt
+import api.jwt as jwt
 
 
 router_file_transfer = APIRouter()

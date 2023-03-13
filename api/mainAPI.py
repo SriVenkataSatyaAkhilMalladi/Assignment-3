@@ -4,8 +4,11 @@ from api import jwt,metadata_geos,metadata_nexrad,file_url_generator,nexrad_coor
 from datetime import datetime
 import logging
 from jose import jwt as jwt_pck
+import os
+from dotenv import load_dotenv
+load_dotenv()
 app = FastAPI()
-
+secret_key = os.environ.get("SECRET_KEY")
 app.include_router(jwt.router_jwt)
 app.include_router(metadata_geos.router_metadata_geos)
 app.include_router(metadata_nexrad.router_metadata_nexrad)
@@ -34,7 +37,22 @@ file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
-    username = 'test'
+
+    auth_header = request.headers.get('Authorization')
+    if auth_header and auth_header.startswith('Bearer '):
+        token = auth_header[len('Bearer '):]
+    else:
+        token = None
+
+    # Extract the username from the JWT token
+    username = 'default'
+    if token:
+        try:
+            payload = jwt_pck.decode(token, secret_key, algorithms=['HS256'])
+            username = payload.get('sub')
+        except:
+            pass
+    
     response = await call_next(request)
     log_dict = {
         "username": username,

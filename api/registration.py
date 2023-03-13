@@ -12,90 +12,47 @@ import re
 import sqlite3
 from pathlib import Path
 from datetime import datetime
+import api.jwt as jwt
 
-
-jwt = api.jwt
 router_register_user = APIRouter()
 router_update_password = APIRouter()
 
 
 class User(BaseModel):
     username: str
-    password: str
+    password: str  
     plan: str
 
-users = {
-    'username': [],
-    # 'password':[],
-    'password': [],
-    'plan':[],
-    'register_time':[],
-    'plan':[],
-    'role':[],
-    'email':[],
-    'status':[],
 
-}
-
+class User_Details(BaseModel):
+    hashed_password: str | None = None
+    register_time: str | None = None
+    role: str | None = 'user'
+    email:str | None = None
+    status:str | None = 'active'
 
 @router_register_user.post("/register")
 async def register_user(user: User):
-    if user.username in users:
-        raise HTTPException(status_code=400, detail="Username already registered")
-
-    hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
-    password = str(hashed_password)
-    registered_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    users['username'].append(user.username)   #map all scraped data into the dict
-    users['password'].append(password)
-    users['plan'].append(user.plan)
-    users['register_time'].append(registered_time)
-    users['role'] = "user"
-    users['email'] = "{}@gmail.com".format(user.username)
-    users['status'] = "active"
+    
+    User_Details.hashed_password = jwt.get_password_hash(user.password)
+    User_Details.register_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    User_Details.role = "user"
+    User_Details.email = "{}@gmail.com".format(user.username)
+    User_Details.status = "active"
 # Define the table schema
     conn = sqlite3.connect('data/register_users.dbo')
     c = conn.cursor()
 
-    # c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='USER_DATA'")
-    # table_exists = c.fetchone()
-
-    # if table_exists:
-    # print("The users table already exists")
     try:
-        for i in range(len(users['username'])):
-            query = "INSERT INTO USER_DATA (username, email, password, status, role, plan, register_time) VALUES (?, ?, ?, ?, ?, ?, ?)"
-            c.execute(query, (users['username'][i], users['email'][i], users['password'][i], users['status'][i], users['role'][i], users['plan'][i], users['register_time'][i]))
-            # query = "INSERT INTO USER_DATA (username, hashed_password, plan, registered_time) VALUES (?, ?, ?, ?)"
-            # c.execute(query, (users['username'][i], users['hashed_password'][i], users['plan'][i], users['registered_time'][i]))
-
-        print("ran till here")
+        query = "INSERT INTO USER_DATA (username, email, password, status, role, plan, register_time) VALUES (?, ?, ?, ?, ?, ?, ?)"
+        c.execute(query, (user.username,User_Details.email,User_Details.hashed_password,User_Details.status,User_Details.role,user.plan,User_Details.register_time))
+        conn.commit()
+        conn.close()
+        return {"Success"}
     except:
-        HTTPException(status_code=500, detail="User already regsitered, please navigate to login")
-        print("User already exists")
-
-    # except:
-    #     raise HTTPException(status_code=200, detail="User registered successfully")
+        raise HTTPException(status_code=400, detail="user already exists")
+           
     
-
-    
-    # #Table does not exist
-    # else:
-    #     print("The users table does not exist")
-    #     c.execute('''CREATE TABLE USER_DATA
-    #             (username TEXT PRIMARY KEY, password TEXT, plan TEXT, email TEXT, status TEXT, role TEXT, register_time TEXT )''')
-
-    #     for i in range(len(users['username'])):
-    #         query = "INSERT INTO USER_DATA (username, password, plan, email, status, role, register_time) VALUES (?, ?, ?, ?, ?, ?, ?)"
-    #         c.execute(query, (users['username'][i], users['password'][i], users['plan'][i],users['email'][i], users['status'][i], users['role'][i], users['register_time'][i]))
-    #         raise HTTPException(status_code=200, detail="User registered successfully")
-        
-    #     print("query executed")
-    # # Commit changes and close the connection
-    # conn.commit()
-    # conn.close()
-    # # print("added in table")
-
 
     
 
@@ -108,27 +65,14 @@ async def update_password(username: str, password: str, confirm_password:str):
     if password != confirm_password:
         raise HTTPException(status_code=400, detail="Passwords do not match")
     elif password != " ":
-        password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        password = jwt.get_password_hash(password)
         conn = sqlite3.connect('data/register_users.dbo')
         c = conn.cursor()
-        # for i in range(len(users['username'])):
-            # query = "INSERT INTO USER_DATA (username, hashed_password, plan) VALUES (?, ?, ?)"
-            # c.execute(query, (users['username'][i], users['hashed_password'][i], users['plan'][i]))
         query = "UPDATE USER_DATA SET password = ? WHERE username = ?"
         c.execute(query, (password, username))
 
-        # users[username]["password"] = password 
-        #not storing password enetered^ stored hashed password
-
-        # Hash the new password
-      
-        # users[username]["hashed_password"] = hashed_password
-        print("running till here")
-        # c.execute(status_code=200, detail="Password updated successfully.")
-        # return {"message": "Password updated successfully."}
     else:
         raise HTTPException(status_code=500, detail="User not found")
-        # return {"error": "User not found."}
 
 
 

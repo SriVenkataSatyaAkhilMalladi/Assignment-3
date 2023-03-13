@@ -6,7 +6,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import boto3
 import os
-
+import api.jwt as jwt
 
 
 
@@ -33,7 +33,7 @@ s3client = boto3.client('s3',region_name='us-east-1',
 #
 
 @router_goes_db.get('/retrieve_goes_years',tags=['GOES'])
-def retrieve_goes_years():
+def retrieve_goes_years(current_user: jwt.User = jwt.Depends(jwt.get_current_active_user)):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     query = "SELECT distinct year FROM folders"
@@ -43,7 +43,7 @@ def retrieve_goes_years():
     return tdf
 
 @router_goes_db.get('/retrieve_goes_day_of_year',tags=['GOES'])
-def retrieve_goes_day_of_year(year:str):
+def retrieve_goes_day_of_year(year:str,current_user: jwt.User = jwt.Depends(jwt.get_current_active_user)):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     query = "SELECT distinct day_of_year FROM folders where year = ?"
@@ -53,7 +53,7 @@ def retrieve_goes_day_of_year(year:str):
     return tdf
 
 @router_goes_db.get('/retrieve_goes_hours',tags=['GOES'])
-def retrieve_goes_hours(year:str,day_of_year:str):
+def retrieve_goes_hours(year:str,day_of_year:str,current_user: jwt.User = jwt.Depends(jwt.get_current_active_user)):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     query = "SELECT distinct hour FROM folders where year = ? and day_of_year = ?"
@@ -63,7 +63,7 @@ def retrieve_goes_hours(year:str,day_of_year:str):
     return tdf
 
 @router_goes_db.get('/log_file_download',tags=['GOES'])
-def log_file_download(file_name, timestamp,dataset):
+def log_file_download(file_name, timestamp,dataset,current_user: jwt.User = jwt.Depends(jwt.get_current_active_user)):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
@@ -74,7 +74,7 @@ def log_file_download(file_name, timestamp,dataset):
     return {"Success"}
 
 @router_goes_db.get('/list_goes_files_as_dropdown',tags=['GOES'])
-def list_goes_files_as_dropdown(bucket:str, prefix:str):
+def list_goes_files_as_dropdown(bucket:str, prefix:str,current_user: jwt.User = jwt.Depends(jwt.get_current_active_user)):
 
     result = s3client.list_objects(Bucket=bucket, Prefix=prefix, Delimiter ='/')
     object_list = [x["Key"].split("/")[-1] for x in result["Contents"]]
