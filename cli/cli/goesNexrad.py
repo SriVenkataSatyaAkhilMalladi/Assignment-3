@@ -6,7 +6,7 @@ import os
 app = typer.Typer()
 
 
-base_url ='http://localhost:8080/'
+base_url ='http://localhost:8070/'
 @app.command()
 def create_user(
         username: str = typer.Option(..., prompt=True),

@@ -5,9 +5,9 @@ services:
         dockerfile: Dockerfile
     container_name: fastapi.latest
     environment:
-      PORT: 8080
+      PORT: 8070
     ports:
-      - "8080:8080"
+      - "8070:8070"
     restart: "no"
     volumes:
       - .:/ass3

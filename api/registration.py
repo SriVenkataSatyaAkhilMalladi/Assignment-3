@@ -70,6 +70,9 @@ async def update_password(username: str, password: str, confirm_password:str):
         c = conn.cursor()
         query = "UPDATE USER_DATA SET password = ? WHERE username = ?"
         c.execute(query, (password, username))
+        conn.commit()
+        conn.close()
+        return {"successfully changed password"}
 
     else:
         raise HTTPException(status_code=500, detail="User not found")

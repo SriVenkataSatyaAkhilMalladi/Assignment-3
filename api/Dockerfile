@@ -14,7 +14,7 @@ COPY . .
 
 RUN pip install --no-cache-dir --upgrade -r ./requirements.txt
 
-EXPOSE 8080
+EXPOSE 8070
 
-CMD ["uvicorn", "api.mainAPI:app", "--host", "0.0.0.0","--reload","--port","8080"]
+CMD ["uvicorn", "api.mainAPI:app", "--host", "0.0.0.0","--reload","--port","8070"]
 
