@@ -17,3 +17,4 @@ great_expectations/uncommitted/validations
 *.pyc
 airflow/logs/scheduler/latest
 ubuntu.pem
+logs/app.log
