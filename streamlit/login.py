@@ -9,8 +9,14 @@ from fastapi import Form
 from pydantic import BaseModel
 import os
 from datetime import datetime
+from dotenv import load_dotenv
 
-BASE_URL = "http://fastapi.latest:8080/"
+
+load_dotenv()
+
+
+# BASE_URL = "http://fastapi.latest:8080/"
+BASE_URL = os.environ.get('URL')
 options = ["Login", "User Registration", "Update Password"]
 selected_option = st.radio("Select an option", options)
 
@@ -33,51 +39,9 @@ if selected_option == "Login":
             access_token = res['access_token']
             st.session_state['access_token'] = access_token
             st.success("Logged in as {}".format(username))
-            # return True # return True after a successful login
+        elif response.status_code == 401:
+            st.error("Incorrect username or password")
 
-    # def login():
-    #     st.title("Login")
-    #     oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-    #     username = st.text_input("Username",key="username")
-    #     password = st.text_input("Password",type="password",key="password")
-    #     if st.button("Login"):
-    #         url = str(os.environ.get('URL')) + "token"
-    #         response = requests.post(url,data={"username": username, "password": password})        
-    #         if response.status_code == 200:
-    #             res = response.json()
-    #             access_token = res['access_token']
-    #             st.session_state['access_token'] = access_token
-    #             st.success("Logged in as {}".format(username))
-    #             st.write(type(access_token))
-    #             return True # return True after a successful login
-    #         else:
-    #             st.error("Invalid username or password")
-    #     return False
-
-    # # define the Streamlit main application
-    # def show_main_app():
-
-    #     url = "http://localhost:8080/users/me"
-    #     #token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNjc3MTI5MTgwfQ.71FkTnZBGyLT1fbz0E0WQMMVFz2H_0injbiTZLVHBS0"
-    #     headers = {"Authorization": f"Bearer {st.session_state['access_token']}"}
-    #     response = requests.get(url, headers=headers)
-
-    #     # check response
-    #     if response.status_code == 200:
-    #         print(response.json())
-
-    #     else:
-    #         print("Request failed with status code:", response.status_code)
-
-
-    # def main():
-    #     if login():
-    #         print("great")
-
-
-    # if __name__ == "__main__":
-    #     main()
 
 elif selected_option == "Update Password":
 
@@ -90,16 +54,15 @@ elif selected_option == "Update Password":
         register_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         if st.button("Update"):
-            if new_password != confirm_password:
-                st.error("Password does not match")
-            else:
-                
-                response = requests.put(f"{BASE_URL}/update_password", json={"username": username, "password": new_password, "confirm_password": confirm_password})
+            url = BASE_URL + 'update_password'
+            response = requests.put(url, json={"username": username, "password": new_password, "confirm_password": confirm_password})
 
-                if response.status_code == 200:
-                    st.success("Password updated successfully.")
-                else:
-                    st.error("Password updated successfully.")
+            if response.status_code == 200:
+                st.success("Password updated successfully.")
+            elif response.status_code == 400:
+                st.error("Password and confirm password not the same.")
+            else:
+                st.error("Password update unsuccessful")
 
 
 
