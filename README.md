@@ -27,6 +27,13 @@ This folder contains all the sql scripts that are being used in this application
 ## streamlit /streamlit
 This contains all the streamlit pages and use the api calls from /api folder to do any task.
 
+## great_expectations folder /great_expectations
+This folder contains all the reports for the great expectations and the expectation suite.
+
+
+
+
+
 # How to Run
 1. Open terminal
 2. Browse the location where you want to clone the repository
