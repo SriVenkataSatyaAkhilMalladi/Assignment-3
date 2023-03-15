@@ -1,9 +1,9 @@
 # Assignment-3
 #Hosted on AWS EC2
 
-Streamlit - http://ec2-52-45-166-0.compute-1.amazonaws.com:8501/
+Streamlit - http://ec2-44-211-9-40.compute-1.amazonaws.com:8501/
 
-FastAPI Docs - http://ec2-52-45-166-0.compute-1.amazonaws.com:8080/docs#/
+FastAPI Docs - http://ec2-44-211-9-40.compute-1.amazonaws.com:8070/docs
 
 AWS Report - https://greatexpectationsteam01.s3.amazonaws.com/index.html
 
