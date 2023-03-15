@@ -54,6 +54,21 @@ This contains all the streamlit pages and use the api calls from /api folder to 
 ````
 docker compose up -d --build
 ````
+
+
+# How to Run CLI commands
+1. Open terminal
+2. Go to the directory of /cli
+3. Write the following command and press enter 
+ ````
+  pip install .
+ ````
+4. This will install the CLI package in local and you can now run cli commands using 'goesNexrad'.
+5. The following commands are available through this
+
+
+
+
  link to documentation: https://codelabs-preview.appspot.com/?file_id=1WeY9z0c7sudPQ1AYpLt4cTWWUyIIraKTsfUFj3M1DmY#0
  ## Declaration 
  Contribution 
