@@ -59,15 +59,30 @@ docker compose up -d --build
 # How to Run CLI commands
 1. Open terminal
 2. Go to the directory of /cli
-3. Write the following command and press enter 
+3. Write the following command and press enter
+ ````
+python setup.py bdist_wheel
+  ````
+  
  ````
   pip install .
  ````
 4. This will install the CLI package in local and you can now run cli commands using 'goesNexrad'.
 5. The following commands are available through this
 
+ create-user                         Create a new user.                                                                                   
+ downloadbyfilename                  Download a file by name.                                                                                
+ fetchcoordinates                    List all coordinates of the nexrad sattelited locations.                                                
+ fetchgoes                           List all files in a bucket with the given prefix.                                                       
+ fetchnexrad                         List all files in a bucket with the given prefix.         
+ 
+6. Execute them like following: 
+  
+ ````
+  goesNexrad create-user
+ ````
 
-
+This will prompt the user to enter the required parameters via prompt.
 
  link to documentation: https://codelabs-preview.appspot.com/?file_id=1WeY9z0c7sudPQ1AYpLt4cTWWUyIIraKTsfUFj3M1DmY#0
  ## Declaration 
