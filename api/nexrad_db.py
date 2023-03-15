@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 import boto3
 import os
 import ast
-
+import api.jwt as jwt
 #---------------------------------------------------------------------------------------------------------------
 #                            Connection Declarations
 #---------------------------------------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ s3client = boto3.client('s3',region_name='us-east-1',
 
 
 @router_nexrad_db.get('/retieve_nexrad_months',tags = ['NEXRAD'])
-def retieve_nexrad_months(year:str):
+def retieve_nexrad_months(year:str,current_user: jwt.User = jwt.Depends(jwt.get_current_active_user)):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     query = "SELECT distinct month FROM folders where year = ?"
@@ -40,7 +40,7 @@ def retieve_nexrad_months(year:str):
     return tdf
 
 @router_nexrad_db.get('/retieve_nexrad_days',tags = ['NEXRAD'])
-def retieve_nexrad_days(year:str,month:str):
+def retieve_nexrad_days(year:str,month:str,current_user: jwt.User = jwt.Depends(jwt.get_current_active_user)):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     query = "SELECT distinct day FROM folders where year = ? and month = ?"
@@ -51,7 +51,7 @@ def retieve_nexrad_days(year:str,month:str):
 
 
 @router_nexrad_db.get('/retieve_nexrad_stations',tags = ['NEXRAD'])
-def retieve_nexrad_stations(year:str,month:str,day:str):
+def retieve_nexrad_stations(year:str,month:str,day:str,current_user: jwt.User = jwt.Depends(jwt.get_current_active_user)):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     query = 'SELECT nexrad_station FROM folders where year = ? and month = ? and day = ?'
@@ -64,7 +64,7 @@ def retieve_nexrad_stations(year:str,month:str,day:str):
 
 
 @router_nexrad_db.get('/list_nexrad_files_as_dropdown',tags = ['NEXRAD'])
-def list_nexrad_files_as_dropdown(bucket_name:str, prefix:str):
+def list_nexrad_files_as_dropdown(bucket_name:str, prefix:str,current_user: jwt.User = jwt.Depends(jwt.get_current_active_user)):
 
     result = s3client.list_objects(Bucket=bucket_name, Prefix=prefix, Delimiter ='/')
     object_list = [x["Key"].split("/")[-1] for x in result["Contents"]]
