@@ -152,7 +152,7 @@ def filename_url_gen_nexrad(filename: str,current_user: jwt.User = jwt.Depends(j
 
 
 @router_file_url_generator.get('/url_generator_geos')
-def url_gen_goes(input:str,current_user: jwt.User = jwt.Depends(jwt.get_current_active_user)):
+def url_gen_goes(input:str):
     # write_logs(message="url_generator_starts")
     arr = input.split("_")
     tproduct_code = arr[1].split("-")
@@ -168,7 +168,7 @@ def url_gen_goes(input:str,current_user: jwt.User = jwt.Depends(jwt.get_current_
 
 
 @router_file_url_generator.get('/url_generator_nexrad')
-def url_gen_nexrad(input:str,current_user: jwt.User = jwt.Depends(jwt.get_current_active_user)):
+def url_gen_nexrad(input:str):
     arr = input.split("_")[0]
     year, day, hour, station = arr[4:8], arr[8:10], arr[10:12], arr[0:4]
     fs = "https://noaa-nexrad-level2.s3.amazonaws.com/{}/{}/{}/{}/{}".format(year,day,hour,station,input)
