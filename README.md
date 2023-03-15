@@ -9,6 +9,9 @@ AWS Report - https://greatexpectationsteam01.s3.amazonaws.com/index.html
 
 Refrence:
 
+## airflow folder /airflow
+This folder contains all the airflow related data and logs.
+
 ## api folder /api
 This folder contains all the api method functions and their respective functional dependencies. They are named as per the functionality - for example: api/metadata_geos.py - contains the api methods for extracting metadata from the Public aws geos bucket to a database.
 
