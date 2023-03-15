@@ -15,6 +15,9 @@ This folder contains all the api method functions and their respective functiona
 ## data folder /data
 This contains all the database file and csv files.
 
+## cli folder /cli
+This contains files related to the CLI
+
 ## sql folder /sql
 This folder contains all the sql scripts that are being used in this application.
 
