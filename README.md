@@ -30,7 +30,8 @@ This contains all the streamlit pages and use the api calls from /api folder to 
 ## great_expectations folder /great_expectations
 This folder contains all the reports for the great expectations and the expectation suite.
 
-
+## logs folder /logs
+This contains the 'app.log' file which contains all the logs of the fastapi.
 
 
 
