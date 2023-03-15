@@ -70,6 +70,13 @@ docker compose up -d --build
 # How to Run CLI commands
 1. Open terminal
 2. Go to the directory of /cli
+Note: For now we need to add the JWT token needed to access the endpoints manually. So in the cli/cli/goesNexrad.py file, in line number 10 add the JWT Token that is created when we login to the streamlit application or you can generate the token by accessing the fastapi website linked above. 
+  2.1 Go to http://ec2-44-211-9-40.compute-1.amazonaws.com:8070/docs and use the /token endpoint.
+  2.2 Pass the username and password as user_free and test respectively
+  2.3 Token is generated and returned as response in response header.
+  2.4 Copy that token from there and add it to cli/cli/goesNexrad.py file at line number 10.
+  2.5 Continue the rest
+
 3. Write the following command and press enter
  ````
 python setup.py bdist_wheel
