@@ -6,11 +6,10 @@ import os
 app = typer.Typer()
 
 
-base_url ='http://localhost:8080/'
+base_url ='http://localhost:8070/'
 @app.command()
 def create_user(
         username: str = typer.Option(..., prompt=True),
-        email: str = typer.Option(..., prompt=True),
         password: str = typer.Option(..., prompt=True),
         plan: str = typer.Option(..., prompt=True)
 ):
@@ -20,12 +19,11 @@ def create_user(
     url = base_url + 'register'
     data = {
         "username" : username,
-        "email": email,
         "password": password,
         "plan": plan
     }
     response = requests.post(url, json=data)
-    typer.echo(response.text)
+    typer.echo("Successfully registered")
 
 @app.command()
 def downloadByFileName(filename: str):
