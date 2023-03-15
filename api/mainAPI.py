@@ -1,9 +1,14 @@
 from fastapi import Depends, FastAPI,Response,Request
 from fastapi.responses import JSONResponse
-from api import jwt,metadata_geos,metadata_nexrad,file_url_generator,nexrad_coords,file_url_generator,file_transfer,file_transfer_nexrad,goes_db,nexrad_db,registration
+from api import jwt,metadata_geos,metadata_nexrad,file_url_generator,nexrad_coords,file_url_generator,file_transfer,file_transfer_nexrad,goes_db,nexrad_db,registration,ratelimiting
 from datetime import datetime
 import logging
 from jose import jwt as jwt_pck
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+secret_key = os.environ.get("SECRET_KEY")
 app = FastAPI()
 
 app.include_router(jwt.router_jwt)
@@ -34,7 +39,22 @@ file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
-    username = 'test'
+
+    auth_header = request.headers.get('Authorization')
+    if auth_header and auth_header.startswith('Bearer '):
+        token = auth_header[len('Bearer '):]
+    else:
+        token = None
+
+    # Extract the username from the JWT token
+    username = 'default'
+    if token:
+        try:
+            payload = jwt_pck.decode(token, secret_key, algorithms=['HS256'])
+            username = payload.get('sub')
+        except:
+            pass
+    
     response = await call_next(request)
     log_dict = {
         "username": username,
@@ -44,6 +64,11 @@ async def log_requests(request: Request, call_next):
         'time': datetime.now().strftime('%H:%M:%S')
     }
     logger.info(log_dict)
+
+    
+
+
+
     return response
 
 
