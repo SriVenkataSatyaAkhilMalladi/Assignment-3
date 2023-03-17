@@ -3,7 +3,6 @@ import time
 import os
 import requests
 from fastapi import APIRouter
-import boto3
 import api.jwt as jwt
 
 
@@ -32,6 +31,8 @@ def transfer_file_to_S3(selected_file,final_url):
                 data.write(requests.get(final_url).content)
                 s3client.upload_file(selected_file, USER_BUCKET_NAME,selected_file )
                 print("success")
+        # Close the file after all operations are done
+        data.close()        
 
 
 def url_gen_goes(input):
